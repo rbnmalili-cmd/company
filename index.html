@@ -1,1 +1,657 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Situs Web PT. RIFKIJAYA BERKAH NUSANTARA</title>
+    <link rel="Icon" type="Image/x-icon" href="icon/icon.png"/>
+    <!-- Font 'Inter' dari Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- TEMPATKAN KODE ADSENSE ANDA DI SINI -->
+    <!-- Kode ini akan terlihat mirip dengan contoh di bawah ini, tetapi dengan ID unik Anda -->
+    <!--
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1234567890123456"
+     crossorigin="anonymous"></script>
+    -->
+    
+    <!-- Semua CSS Tailwind langsung disematkan di sini -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Style kustom di luar Tailwind, difokuskan untuk mobile-first */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+            color: #1f2937;
+        }
+        .page-content {
+            display: none;
+            padding-top: 2rem;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .page-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .nav-link {
+            transition: all 0.2s;
+        }
+        .nav-link.active {
+            background-color: #1e40af;
+            color: #ffffff;
+            font-weight: 600;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .contact-form-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .animated-title {
+            background: linear-gradient(to right, #158bfa, #1e40af, #fa1515, #e6360a);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+            animation: running-color 4s linear infinite;
+        }
+        @keyframes running-color {
+            from { background-position: 0% center; }
+            to { background-position: -100% center; }
+        }
+        .gallery-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f8fafc;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+        }
+        /* Gaya untuk kontainer video 16:9 */
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%; /* Rasio 16:9 (9 / 16 * 100) */
+            background-color: #000;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .video-container video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        /* Secara default, menu desktop disembunyikan dan menu seluler ditampilkan */
+        .nav-menu-desktop {
+            display: none;
+        }
+        #menu-toggle {
+            display: block;
+        }
+        #nav-menu {
+            display: none; /* Disembunyikan secara default */
+            flex-direction: column;
+            gap: 0.5rem;
+            width: 100%;
+        }
+        #nav-menu.flex {
+            display: flex;
+        }
+        /* Hanya tampilkan menu desktop pada layar yang lebih besar */
+        @media (min-width: 768px) {
+            .nav-menu-desktop {
+                display: flex;
+            }
+            #menu-toggle {
+                display: none;
+            }
+            #nav-menu {
+                display: none !important;
+            }
+        }
+        /* Gaya untuk Chat Bot */
+        .chat-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 100;
+        }
+        .chat-button {
+            background-color: #1e40af;
+            color: white;
+            padding: 1rem;
+            border-radius: 9999px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out;
+        }
+        .chat-button:hover {
+            transform: scale(1.1);
+        }
+        .chat-box {
+            position: fixed;
+            bottom: 6rem;
+            right: 2rem;
+            width: 90%;
+            max-width: 400px;
+            height: 500px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            display: none;
+            animation: slideIn 0.3s ease-in-out;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @media (min-width: 768px) {
+            .chat-box {
+                bottom: 6rem;
+                right: 2rem;
+            }
+        }
+        .chat-header {
+            background-color: #1e40af;
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .chat-messages {
+            flex-grow: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            background-color: #f1f5f9;
+        }
+        .chat-input-container {
+            padding: 1rem;
+            background-color: white;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+        }
+        .chat-input-container input {
+            flex-grow: 1;
+            border: 1px solid #e2e8f0;
+            padding: 0.75rem 1rem;
+            border-radius: 9999px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .chat-input-container input:focus {
+            border-color: #1e40af;
+        }
+        .chat-input-container button {
+            padding: 0.75rem;
+            margin-left: 0.5rem;
+            border-radius: 9999px;
+            background-color: #1e40af;
+            color: white;
+            transition: background-color 0.2s;
+        }
+        .chat-input-container button:hover {
+            background-color: #1d4ed8;
+        }
+        .message-row {
+            display: flex;
+            width: 100%;
+            margin-bottom: 0.75rem;
+        }
+        .bot-message {
+            background-color: #e2e8f0;
+            padding: 0.75rem;
+            border-radius: 0.75rem;
+            max-width: 80%;
+        }
+        .user-message {
+            background-color: #d1e7f5;
+            padding: 0.75rem;
+            border-radius: 0.75rem;
+            max-width: 80%;
+            margin-left: auto;
+        }
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            font-style: italic;
+            color: #6b7280;
+            font-size: 0.875rem;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .typing-indicator span {
+            animation: dot-flashing 1s infinite alternate;
+            display: inline-block;
+            width: 5px;
+            height: 5px;
+            background-color: #6b7280;
+            border-radius: 50%;
+            margin-left: 0.25rem;
+        }
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        @keyframes dot-flashing {
+            0% { opacity: 0.2; }
+            50% { opacity: 1; }
+            100% { opacity: 0.2; }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Navigasi Utama -->
+    <nav class="bg-blue-900 text-white p-4 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center max-w-7xl flex-wrap">
+            <!-- Logo dan Nama PT -->
+            <div class="flex items-center">
+                <img src="icon/icon.png" alt="Logo PT. RIFKIJAYA BERKAH NUSANTARA" class="h-8 w-8 mr-2 rounded-full">
+                <h1 class="text-xl font-bold flex items-center">
+                    <span class="animated-title">PT. RIFKIJAYA BERKAH NUSANTARA</span>
+                </h1>
+            </div>
+            
+            <!-- Tombol untuk menu seluler -->
+            <button id="menu-toggle" class="text-white focus:outline-none md:hidden">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+            
+            <!-- Menu Navigasi Desktop (Disembunyikan secara default pada seluler) -->
+            <div class="nav-menu-desktop">
+                <button class="nav-link bg-blue-800 hover:bg-blue-700 text-sm px-4 py-2 rounded-full transition-colors duration-200" data-page="home">Beranda</button>
+                <button class="nav-link bg-blue-800 hover:bg-blue-700 text-sm px-4 py-2 rounded-full transition-colors duration-200" data-page="services">Type of Service</button>
+                <button class="nav-link bg-blue-800 hover:bg-blue-700 text-sm px-4 py-2 rounded-full transition-colors duration-200" data-page="vision">Visi & Misi</button>
+                <button class="nav-link bg-blue-800 hover:bg-blue-700 text-sm px-4 py-2 rounded-full transition-colors duration-200" data-page="about">Tentang Kami</button>
+                <button class="nav-link bg-blue-800 hover:bg-blue-700 text-sm px-4 py-2 rounded-full transition-colors duration-200" data-page="gallery">Galeri</button>
+            
+                <button class="nav-link bg-blue-800 hover:bg-blue-700 text-sm px-4 py-2 rounded-full transition-colors duration-200" data-page="contact">Kontak</button>
+            </div>
+        </div>
+        
+        <!-- Menu Navigasi Seluler (Tampil hanya pada seluler) -->
+        <div id="nav-menu" class="hidden flex-col gap-2 mt-4 w-full md:hidden">
+            <button class="nav-link bg-blue-800 hover:bg-blue-700 text-sm px-4 py-2 rounded-full transition-colors duration-200 text-center" data-page="home">Beranda</button>
+            <button class="nav-link bg-blue-800 hover:bg-blue-700 text-sm px-4 py-2 rounded-full transition-colors duration-200 text-center" data-page="services">Type of Service</button>
+            <button class="nav-link bg-blue-800 hover:bg-blue-700 text-sm px-4 py-2 rounded-full transition-colors duration-200 text-center" data-page="vision">Visi & Misi</button>
+            <button class="nav-link bg-blue-800 hover:bg-blue-700 text-sm px-4 py-2 rounded-full transition-colors duration-200 text-center" data-page="about">Tentang Kami</button>
+            <button class="nav-link bg-blue-800 hover:bg-blue-700 text-sm px-4 py-2 rounded-full transition-colors duration-200 text-center" data-page="gallery">Galeri</button>
+            
+            <button class="nav-link bg-blue-800 hover:bg-blue-700 text-sm px-4 py-2 rounded-full transition-colors duration-200 text-center" data-page="contact">Kontak</button>
+        </div>
+    </nav>
+
+    <!-- Kontainer Utama untuk Konten Halaman -->
+    <main class="container mx-auto p-4 flex-grow max-w-7xl">
+        
+        <!-- Halaman 1: Beranda -->
+        <section id="home" class="page-content active bg-white p-6 rounded-xl shadow-lg flex flex-col items-center">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-4 text-center">AGENCY SHIPPING COMPANY</h2>
+            <p class="text-base sm:text-lg text-gray-700 mb-6 text-center"></p>
+            
+            <!-- Kontainer Video 16:9 -->
+            <div class="video-container">
+                <video src="mp4/videorbn.mp4" autoplay loop muted playsinline controls></video>
+            </div>
+            
+            <p class="text-base sm:text-lg text-gray-700 mt-6 text-center leading-relaxed"></p>
+        </section>
+
+        <!-- Halaman 2: Layanan (sekarang Type of Service) -->
+        <section id="services" class="page-content bg-white p-6 rounded-xl shadow-lg">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-4 text-center">Type of Service</h2>
+            <p class="text-base sm:text-lg text-gray-700 mb-6 text-center">Kami menawarkan beberapa layanan profesional untuk anda</p>
+            <div class="grid grid-cols-1 gap-4">
+                <div class="bg-gray-100 p-5 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+                    <h3 class="font-bold text-xl mb-2">Agency Pelabuhan</h3>
+                    <p class="text-sm text-gray-600">→ izin masuk/keluar, pandu, tunda, tambat.</p>
+                </div>
+                <div class="bg-gray-100 p-5 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+                    <h3 class="font-bold text-xl mb-2">Agen Kargo</h3>
+                    <p class="text-sm text-gray-600">→ bongkar muat, dokumen, survey muatan.</p>
+                </div>
+                <div class="bg-gray-100 p-5 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+                    <h3 class="font-bold text-xl mb-2">Husbandry</h3>
+                    <p class="text-sm text-gray-600">→ kebutuhan kapal & awak kapal.</p>
+                </div>
+                <div class="bg-gray-100 p-5 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+                    <h3 class="font-bold text-xl mb-2">Keuangan & Dokumen</h3>
+                    <p class="text-sm text-gray-600">→ biaya, laporan, klaim.</p>
+            </div>
+        </section>
+
+        <!-- Halaman 3: Visi & Misi -->
+        <section id="vision" class="page-content bg-white p-6 rounded-xl shadow-lg">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-4 text-center">Visi & Misi</h2>
+            <div class="grid grid-cols-1 gap-4">
+                <div class="bg-gray-100 p-5 rounded-lg shadow-md">
+                    <h3 class="font-bold text-2xl mb-2 text-blue-800">🌟 Visi</h3>
+                    <p class="text-gray-600">Menjadi perusahaan terdepan, terpercaya, dan profesional. serta mampu memberikan layanan terbaik untuk mendukung kelancaran operasional pelayaran</p>
+                </div>
+                <div class="bg-gray-100 p-5 rounded-lg shadow-md">
+                    <h3 class="font-bold text-2xl mb-2 text-blue-800">🎯 Misi</h3>
+                    <p class="text-gray-600">
+                        1. Memberikan layanan yang cepat, tepat, aman, dan efesien dalam setiap proses keagenan kapal, mulai dari clearance, penanganan muatan, hingga kebutuhan awak kapal. <br>
+                        2. Membangun hubungan baik dengan pemilik kapal instansi terkait kelancaran operasional.<br>
+                        3. Menjamin kepatuhan penuh terhadap regulasi pelabuhan, bea cukai, imigrasi, dan karantina sesuai standar nasional maupun internasional.<br>
+                        4. Menyediakan solusi terpadu untuk kebutuhan kapal dan muatan, termasuk layanan husbandry, bunker, dan document.<br>
+                        5. Meningkatkan kompetensi tim secara berkelanjutan agar selalu profesional, dan berorientasi pada kepuasan pelanggan.<br>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+       
+        <!-- Halaman 4: Tentang Kami -->
+        <section id="about" class="page-content bg-white p-6 rounded-xl shadow-lg">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-4 text-center">Tentang Kami</h2>
+            <p class="text-base sm:text-lg text-gray-700 mb-6 text-center">PT. RIFKIJAYA BERKAH NUSANTARA didirikan pada tahun 2022. perusahaan kami perusahaan jasa keagenan kapal yang berfokus pada pelayanan profesional dan terpercaya untuk mendukung kelancaran operasional kapal di pelabuhan. Dengan pengalaman dan jaringan yang luas, kami siap menjadi mitra strategis bagi pemilik kapal.</p>
+            <p class="text-base sm:text-lg text-gray-700 mb-6 text-center">Kami memahami bahwa setiap kapal membutuhkan layanan yang cepat, tepat, dan efisien. Oleh karena itu, kami menghadirkan berbagai jenis layanan mulai dari pengurusan clearance kapal, penanganan muatan, pelayanan kebutuhan awak kapal, hingga dukungan oleh tim</p>
+             <p class="text-base sm:text-lg text-gray-700 mb-6 text-center">berpengalaman serta hubungan baik dengan otoritas pelabuhan, bea cukai, imigrasi, dan karantina, kami memastikan setiap kapal yang kami tangani dapat beroperasi dengan aman, efisien, dan sesuai regulasi.</p>
+         </div>
+    </section>
+
+        <!-- Halaman 5: Galeri -->
+        <section id="gallery" class="page-content bg-white p-6 rounded-xl shadow-lg">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-4 text-center">KAPAL YANG SUDAH BERKUNJUNG DAN YANG PERNAH MEMAKAI JASA KAMI</h2>
+            <p class="text-base sm:text-lg text-gray-700 mb-6 text-center">Lihat beberapa kapal yang telah kami layani.</p>
+            <div class="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+                <!-- Foto-foto dari galeri Anda -->
+                <div class="gallery-item">
+                    <img src="Image/kapal1.jpg" alt="foto kapal 1" class="w-full h-auto rounded-lg">
+                    <p class="text-center text-sm font-semibold mt-2">MT TIRTA SAMUDRA XI</p>
+                    <p class="text-center text-sm font-semibold mt-2">PT. HENTAT SAMUDRA BAHARI</p>
+
+                </div>
+                  <div class="gallery-item">
+                    <img src="Image/km.dholpin.jpg" alt="foto kapal 1" class="w-full h-auto rounded-lg">
+                    <p class="text-center text-sm font-semibold mt-2">KM. DHOLPIN</p>
+                    <p class="text-center text-sm font-semibold mt-2">PT. PELAYARAN BERJAYA</p>
+                </div> 
+                <div class="gallery-item">
+                    <img src="Image/MT.ALEXANDRIA.jpg" alt="Foto Kapal 3" class="w-full h-auto rounded-lg">
+                    <p class="text-center text-sm font-semibold mt-2">MT. ALEXANDRIA </p>
+                     <p class="text-center text-sm font-semibold mt-2">PT.ANPAL TRANS LAUT SAMUDERA</p>
+                </div>
+                <div class="gallery-item">
+                    <img src="Image/KM.SANEI.jpg" alt="Foto Kapal 4" class="w-full h-auto rounded-lg">
+                    <p class="text-center text-sm font-semibold mt-2">KM. SANEI</p>
+                    <p class="text-center text-sm font-semibold mt-2">PT. BINTANG SENTOSA JAYA</p>
+                </div>
+                <div class="gallery-item">
+                    <img src="Image/kapal4.jpg" alt="Foto Kapal 5" class="w-full h-auto rounded-lg">
+                    <p class="text-center text-sm font-semibold mt-2">KM. NEW GLORY</p>
+                    <p class="text-center text-sm font-semibold mt-2"></p>
+                </div>
+                <div class="gallery-item">
+                    <img src="Image/km.innova.jpg" alt="Foto Kapal 5" class="w-full h-auto rounded-lg">
+                    <p class="text-center text-sm font-semibold mt-2">KM. INNOVA</p>
+                    <p class="text-center text-sm font-semibold mt-2">PT. BERLIAN ABADI SANTOSO</p>
+                </div>
+                <div class="gallery-item">
+                    <img src="Image/KM.CAMRY.jpg" alt="Foto Kapal 5" class="w-full h-auto rounded-lg">
+                    <p class="text-center text-sm font-semibold mt-2">KM. CAMRY</p>
+                    <p class="text-center text-sm font-semibold mt-2">PT. BERLIAN ABADI SANTOSO</p>
+                <!-- Tambahkan lebih banyak item galeri sesuai kebutuhan -->
+            </div>
+        </section>
+
+        <!-- Halaman 6: Kontak -->
+        <section id="contact" class="page-content bg-white p-6 rounded-xl shadow-lg">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-4 text-center">Hubungi Admin di Whatsapp</h2>
+            <p class="text-base sm:text-lg text-gray-700 mb-6 text-center">Silakan hubungi kami untuk informasi lebih lanjut atau kerja sama bisnis.</p>
+            <div class="contact-form-container bg-gray-100 p-6 rounded-lg shadow-md border border-gray-200 text-center">
+                <!-- Tombol WhatsApp dengan pesan otomatis -->
+                <a href="https://wa.me/6281242162979?text=Halo%20PT%20Rifkijaya%20Berkah%20Nusantara,%20saya%20tertarik%20dengan%20layanan%20Anda." target="_blank" class="inline-flex items-center justify-center w-full bg-green-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-green-600 transition-colors duration-200">
+                    <!-- SVG Icon WhatsApp -->
+                    <svg class="w-6 h-6 mr-2" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12.04 2.05a9.88 9.88 0 0 0-8.91 14.82l-1.34 4.88 5.06-1.32a10 10 0 0 0 8.5-4.88A9.88 9.88 0 0 0 12.04 2.05zm5.55 14.36a7.7 7.7 0 0 1-5.55 2.27 7.63 7.63 0 0 1-4.07-1.12L3.62 19.3l.89-3.23a7.73 7.73 0 0 1-1.15-4.08 7.7 7.7 0 0 1 12.04-6.3l.03.03.03.02a7.67 7.67 0 0 1 2.29 5.43 7.67 7.67 0 0 1-2.29 5.43zM12.04 4.05a8.1 8.1 0 0 1 8.12 8.12 8.1 8.1 0 0 1-8.12 8.12 8.1 8.1 0 0 1-4.32-1.2l-.08-.06-.11.03-3.69.96a.5.5 0 0 1-.62-.62l.96-3.69a8.1 8.1 0 0 1-1.2-4.32 8.1 8.1 0 0 1 8.12-8.12zm1.68 4.35c-.1-.23-.29-.36-.61-.36-.31 0-.6.15-.81.4-.2.25-.66.6-.8.74-.15.15-.29.18-.55.08-.26-.1-.65-.24-.95-.44a8.2 8.2 0 0 1-1.16-1.04c-.33-.5-.14-.8.1-.98.24-.18.52-.45.65-.63.13-.19.16-.36.1-.55-.06-.19-.61-1.47-1.1-1.93-.49-.46-.86-.59-1.02-.59-.15 0-.32.02-.49.02-.17 0-.44.06-.66.3-.2.23-.74.72-.74 1.77 0 1.05.76 2.05.88 2.2.13.15 1.5.34 2.94-.88a8.3 8.3 0 0 0 1.95-2.22c.23-.4.21-.5.15-.65z"/>
+                    </svg>
+                    Hubungi Admin
+                </a>
+                <p class="text-sm text-gray-500 mt-1">Catatan: Menanyakan jasa keagenan kami.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Chat Bot Container -->
+    <div class="chat-container">
+        <!-- Tombol Chat yang Mengambang -->
+        <button id="chat-button" class="chat-button focus:outline-none">
+            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+            </svg>
+        </button>
+
+        <!-- Jendela Chat -->
+        <div id="chat-box" class="chat-box">
+            <div class="chat-header">
+                <span class="font-bold">CS Otomatis</span>
+                <button id="close-chat-button" class="focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            <div id="chat-messages" class="chat-messages">
+                <!-- Pesan chat akan ditambahkan di sini oleh JavaScript -->
+            </div>
+            <div class="chat-input-container">
+                <input type="text" id="chat-input" class="flex-grow p-2 border rounded-full mr-2 focus:outline-none" placeholder="Ketik pesan Anda...">
+                <button id="send-button" class="bg-blue-800 text-white rounded-full p-2 hover:bg-blue-900 transition-colors duration-200">
+                    <svg class="w-6 h-6 transform rotate-90" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-blue-900 text-white text-center p-4 mt-8">
+        <p>&copy; 2025 PT. RIFKIJAYA BERKAH NUSANTARA. Hak Cipta Dilindungi.</p>
+    </footer>
+
+  <!-- JavaScript untuk Navigasi Halaman dan Chat Bot -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuToggle = document.getElementById('menu-toggle');
+            const navMenu = document.getElementById('nav-menu');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const pages = document.querySelectorAll('.page-content');
+            
+            // Fungsi untuk menampilkan halaman yang dipilih
+            function showPage(pageId) {
+                pages.forEach(page => page.classList.remove('active'));
+                const activePage = document.getElementById(pageId);
+                if (activePage) {
+                    activePage.classList.add('active');
+                }
+            }
+
+            // Fungsi untuk menandai tombol navigasi yang aktif
+            function setActiveLink(linkElement) {
+                navLinks.forEach(link => link.classList.remove('active'));
+                linkElement.classList.add('active');
+            }
+
+            // Tambahkan event listener untuk tombol menu
+            menuToggle.addEventListener('click', () => {
+                navMenu.classList.toggle('hidden');
+                navMenu.classList.toggle('flex');
+            });
+
+            // Tambahkan event listener ke setiap tombol navigasi
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    const pageId = link.dataset.page;
+                    showPage(pageId);
+                    setActiveLink(link);
+                    // Sembunyikan menu setelah klik pada perangkat seluler
+                    if (window.innerWidth < 768) {
+                        navMenu.classList.add('hidden');
+                        navMenu.classList.remove('flex');
+                    }
+                });
+            });
+
+            // Tampilkan halaman 'Beranda' secara default saat pertama kali dimuat
+            const defaultLink = document.querySelector('.nav-link[data-page="home"]');
+            if (defaultLink) {
+                showPage('home');
+                setActiveLink(defaultLink);
+            }
+
+            // ==========================================================
+            // LOGIKA CHAT AGENT CS DENGAN API GEMINI
+            // ==========================================================
+            const chatButton = document.getElementById('chat-button');
+            const chatBox = document.getElementById('chat-box');
+            const closeChatButton = document.getElementById('close-chat-button');
+            const chatMessages = document.getElementById('chat-messages');
+            const chatInput = document.getElementById('chat-input');
+            const sendButton = document.getElementById('send-button');
+
+            const modelName = 'gemini-2.5-flash-preview-05-20';
+            const apiKey = "";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
+
+            // Tambahkan pesan pembuka saat chat box dibuka
+            function addWelcomeMessage() {
+                const welcomeMessage = `Halo! Saya adalah Asisten Virtual dari PT. RIFKIJAYA BERKAH NUSANTARA. Saya di sini untuk menjawab pertanyaan Anda tentang layanan kami.`;
+                addMessage('bot', welcomeMessage);
+            }
+
+            function addMessage(sender, message) {
+                const msgDiv = document.createElement('div');
+                msgDiv.classList.add('flex', 'justify-start', 'mb-2');
+                if (sender === 'user') {
+                    msgDiv.classList.remove('justify-start');
+                    msgDiv.classList.add('justify-end');
+                }
+                const msgSpan = document.createElement('span');
+                msgSpan.classList.add('rounded-lg', 'py-2', 'px-4', 'max-w-xs');
+                msgSpan.classList.add(sender === 'bot' ? 'bg-gray-200' : 'bg-blue-500', sender === 'bot' ? 'text-black' : 'text-white');
+                msgSpan.textContent = message;
+                msgDiv.appendChild(msgSpan);
+                chatMessages.appendChild(msgDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight; // Auto-scroll
+            }
+
+            let chatHistory = [];
+            const systemPrompt = `Anda adalah seorang customer service agent yang ramah dan profesional untuk PT. RIFKIJAYA BERKAH NUSANTARA. Tugas Anda adalah memberikan informasi tentang perusahaan dan layanannya secara akurat.
+            
+            Berikut adalah informasi tentang perusahaan:
+            Nama: PT. RIFKIJAYA BERKAH NUSANTARA
+            Jenis Perusahaan: Jasa kapal 
+            Visi: Menjadi perusahaan terdepan dan terpercaya dalam industri jasa kapal, yang memberikan nilai tambah bagi setiap mitra dan pelanggan melalui pelayanan terbaik.
+            Misi: 1. Memberikan layanan yang cepat, tepat, dan andal. 2. Membangun kerja sama jangka panjang. 3. Berinovasi dan beradaptasi dengan teknologi. 4. Menjunjung tinggi profesionalisme dan integritas.
+            Layanan Utama:
+            - Ship Agency: Pelayanan agen kapal yang lengkap dan efisien.
+            - Crew Handling: Manajemen kru profesional, termasuk pergantian kru dan pengurusan dokumen.
+            - Freight Forwarding: Jasa pengiriman barang terintegrasi.
+            Kontak: Hubungi admin kami di WhatsApp: +6285823302350.
+
+            Tanggapi pertanyaan pelanggan dengan sopan, akurat, dan sesuai dengan informasi di atas. Jika Anda tidak tahu jawabannya, arahkan mereka untuk menghubungi admin melalui WhatsApp.`;
+
+            async function sendMessageToGemini(userMessage) {
+                try {
+                    addMessage('user', userMessage);
+                    chatInput.value = '';
+                    chatHistory.push({ role: 'user', parts: [{ text: userMessage }] });
+
+                    // Tambahkan indikator "mengetik"
+                    const typingIndicator = document.createElement('div');
+                    typingIndicator.classList.add('typing-indicator', 'text-sm', 'text-gray-500', 'mt-2');
+                    typingIndicator.innerHTML = 'CS mengetik<span>.</span><span>.</span><span>.</span>';
+                    chatMessages.appendChild(typingIndicator);
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                    const payload = {
+                        contents: chatHistory,
+                        systemInstruction: { parts: [{ text: systemPrompt }] },
+                    };
+
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    // Hapus indikator "mengetik"
+                    chatMessages.removeChild(typingIndicator);
+
+                    if (!response.ok) {
+                        throw new Error(`Error API: ${response.status}`);
+                    }
+
+                    const result = await response.json();
+                    const botResponse = result?.candidates?.[0]?.content?.parts?.[0]?.text || "Maaf, ada masalah dalam menghubungi asisten. Silakan coba lagi.";
+                    addMessage('bot', botResponse);
+                    chatHistory.push({ role: 'model', parts: [{ text: botResponse }] });
+
+                } catch (error) {
+                    console.error('API Error:', error);
+                    // Hapus indikator "mengetik" jika ada error
+                    const typingIndicator = chatMessages.querySelector('.typing-indicator');
+                    if(typingIndicator) {
+                        chatMessages.removeChild(typingIndicator);
+                    }
+                    addMessage('bot', "Maaf, ada masalah dalam layanan. Silakan coba lagi nanti.");
+                }
+            }
+
+            chatButton.addEventListener('click', () => {
+                chatBox.style.display = 'flex';
+                // Kosongkan riwayat chat saat membuka
+                chatMessages.innerHTML = '';
+                chatHistory = [];
+                addWelcomeMessage();
+            });
+
+            closeChatButton.addEventListener('click', () => {
+                chatBox.style.display = 'none';
+            });
+
+            sendButton.addEventListener('click', () => {
+                const message = chatInput.value.trim();
+                if (message) {
+                    sendMessageToGemini(message);
+                }
+            });
+
+            chatInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    sendButton.click();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
 
